@@ -1,7 +1,8 @@
 import * as actions from '../actions/types';
 
 const initialState = {
-  contacts: []
+  contacts: [],
+  contact: {}
 };
 
 export default function (state = initialState, action) {
@@ -21,6 +22,16 @@ export default function (state = initialState, action) {
         ...state,
         contacts: state.contacts.filter((c) => { return c.id !== action.payload })
       };
+    case actions.GET_CONTACT:
+      return {
+        ...state,
+        contact: action.payload
+      };
+    case actions.UPDATE_CONTACT:
+      return {
+        ...state,
+        contacts: state.contacts.map(contact => contact.id === action.payload.id ? contact = action.payload : contact)
+      }
     default:
       return state;
   }
