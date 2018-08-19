@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { deleteContact } from '../../actions/contactActions';
 
 class Contact extends Component {
   state = {
@@ -8,6 +10,7 @@ class Contact extends Component {
   };
 
   onDeleteClick = id => {
+    this.props.deleteContact(id);
     //// DELETE CONTACT ////
   };
 
@@ -18,46 +21,47 @@ class Contact extends Component {
     return (
       <div className="card card-body mb-3">
         <h4>
-          {name}{' '}
+          { name }{ ' ' }
           <i
-            onClick={() =>
+            onClick={ () =>
               this.setState({
                 showContactInfo: !this.state.showContactInfo
               })
             }
             className="fas fa-sort-down"
-            style={{ cursor: 'pointer' }}
+            style={ { cursor: 'pointer' } }
           />
           <i
             className="fas fa-times"
-            style={{ cursor: 'pointer', float: 'right', color: 'red' }}
-            onClick={this.onDeleteClick.bind(this, id)}
+            style={ { cursor: 'pointer', float: 'right', color: 'red' } }
+            onClick={ this.onDeleteClick.bind(this, id) }
           />
-          <Link to={`contact/edit/${id}`}>
+          <Link to={ `contact/edit/${id}` }>
             <i
               className="fas fa-pencil-alt"
-              style={{
+              style={ {
                 cursor: 'pointer',
                 float: 'right',
                 color: 'black',
                 marginRight: '1rem'
-              }}
+              } }
             />
           </Link>
         </h4>
-        {showContactInfo ? (
+        { showContactInfo ? (
           <ul className="list-group">
-            <li className="list-group-item">Email: {email}</li>
-            <li className="list-group-item">Phone: {phone}</li>
+            <li className="list-group-item">Email: { email }</li>
+            <li className="list-group-item">Phone: { phone }</li>
           </ul>
-        ) : null}
+        ) : null }
       </div>
     );
   }
 }
 
 Contact.propTypes = {
-  contact: PropTypes.object.isRequired
+  contact: PropTypes.object.isRequired,
+  deleteContact: PropTypes.func.isRequired,
 };
 
-export default Contact;
+export default connect(null, { deleteContact })(Contact);

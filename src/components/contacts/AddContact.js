@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import TextInputGroup from '../layout/TextInputGroup';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
+import uuid from 'uuid';
 
 class AddContact extends Component {
   state = {
@@ -31,13 +35,14 @@ class AddContact extends Component {
     }
 
     const newContact = {
+      id: uuid(),
       name,
       email,
       phone
     };
 
     //// SUBMIT CONTACT ////
-
+    this.props.addContact(newContact);
     // Clear State
     this.setState({
       name: '',
@@ -58,31 +63,31 @@ class AddContact extends Component {
       <div className="card mb-3">
         <div className="card-header">Add Contact</div>
         <div className="card-body">
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={ this.onSubmit }>
             <TextInputGroup
               label="Name"
               name="name"
               placeholder="Enter Name"
-              value={name}
-              onChange={this.onChange}
-              error={errors.name}
+              value={ name }
+              onChange={ this.onChange }
+              error={ errors.name }
             />
             <TextInputGroup
               label="Email"
               name="email"
               type="email"
               placeholder="Enter Email"
-              value={email}
-              onChange={this.onChange}
-              error={errors.email}
+              value={ email }
+              onChange={ this.onChange }
+              error={ errors.email }
             />
             <TextInputGroup
               label="Phone"
               name="phone"
               placeholder="Enter Phone"
-              value={phone}
-              onChange={this.onChange}
-              error={errors.phone}
+              value={ phone }
+              onChange={ this.onChange }
+              error={ errors.phone }
             />
             <input
               type="submit"
@@ -96,4 +101,8 @@ class AddContact extends Component {
   }
 }
 
-export default AddContact;
+AddContact.propTypes = {
+  addContact: PropTypes.func.isRequired,
+}
+
+export default connect(null, { addContact })(AddContact);
